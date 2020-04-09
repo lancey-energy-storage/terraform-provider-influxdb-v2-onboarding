@@ -1,0 +1,27 @@
+<% wrap_layout :inner do %>
+  <% content_for :sidebar do %>
+    <div class="docs-sidebar hidden-print affix-top" role="complementary">
+      <ul class="nav docs-sidenav">
+        <li<%= sidebar_current("docs-home") %>>
+          <a href="/docs/providers/index.html">All Providers</a>
+        </li>
+
+        <li<%= sidebar_current("docs-influxdbv2-onboarding-index") %>>
+          <a href="/docs/providers/influxdbv2-onboarding/index.html">InfluxDB V2 Provider Onboarding</a>
+        </li>
+
+        <li<%= sidebar_current("docs-influxdbv2-onboarding-resource") %>>
+          <a href="#">Resources</a>
+          <ul class="nav nav-visible">
+            <li<%= sidebar_current("docs-influxdbv2-onboarding-resource-setup") %>>
+              <a href="/docs/providers/influxdbv2-onboarding/r/setup.html">bucket</a>
+            </li>
+        </ul>
+        </li>
+
+      </ul>
+    </div>
+  <% end %>
+
+  <%= yield %>
+<% end %>
