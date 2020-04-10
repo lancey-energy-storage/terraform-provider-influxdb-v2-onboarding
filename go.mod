@@ -7,5 +7,5 @@ require (
 	github.com/hashicorp/hcl/v2 v2.3.0 // indirect
 	github.com/hashicorp/terraform-config-inspect v0.0.0-20191212124732-c6ae6269b9d7 // indirect
 	github.com/hashicorp/terraform-plugin-sdk v1.8.0
-	github.com/lancey-energy-storage/influxdb-client-go v0.1.6-0.20200410151832-81a6f2b6310b
+	github.com/lancey-energy-storage/influxdb-client-go v0.1.6-0.20200410160148-dc950e99699c
 )
