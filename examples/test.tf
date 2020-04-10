@@ -1,10 +1,10 @@
 provider "influxdbv2-onboarding" {
   url = "http://localhost:9999"
-  username = "test"
-  password = "test1234"
 }
 
 resource "influxdbv2-onboarding_setup" "setup" {
+  username = "test"
+  password = "test1234"
   bucket = "test-bucket"
   org = "test-org"
   retention_period = 4
