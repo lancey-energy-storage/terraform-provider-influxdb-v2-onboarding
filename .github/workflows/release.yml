@@ -39,4 +39,4 @@ jobs:
           goarch: ${{ matrix.goarch }}
           goversion: "1.14"
           project_path: "./"
-          binary_name: "influxdb-v2-onboarding_${{ steps.get_version.outputs.RELEASE_VERSION }}"
+          binary_name: "terraform-provider-influxdbv2-onboarding_${{ steps.get_version.outputs.RELEASE_VERSION }}"
