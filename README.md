@@ -42,6 +42,8 @@ make testacc
 
 ## How to use
 
+At first, you need to start a new Influxdb V2 instance. To do so, you can follow the official documentation [here](https://v2.docs.influxdata.com/v2.0/get-started/#start-with-influxdb-oss)
+
 ### Initialize the provider
 ```hcl
 provider "influxdbv2-onboarding" {
