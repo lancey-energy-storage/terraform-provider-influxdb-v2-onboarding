@@ -22,11 +22,27 @@ Don't forget to copy `terraform-provider-influxdbv2` to your terraform plugin di
 
 ## Test
 
+To run test, at first run this command to check fmt requirements:
+ 
 ```bash
-go test ./influxdbv2-onboarding
+make fmt
+```
+
+Then run this command to test the provider instance test: 
+
+```bash
+make test
+```
+
+And finally to run acceptance test, run this command: 
+
+```bash
+make testacc
 ```
 
 ## How to use
+
+At first, you need to start a new Influxdb V2 instance. To do so, you can follow the official documentation [here](https://v2.docs.influxdata.com/v2.0/get-started/#start-with-influxdb-oss)
 
 ### Initialize the provider
 ```hcl
