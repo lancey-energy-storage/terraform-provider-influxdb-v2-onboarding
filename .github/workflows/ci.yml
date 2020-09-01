@@ -1,4 +1,4 @@
-name: Go
+name: CI
 on: [push, pull_request]
 jobs:
 
@@ -22,7 +22,6 @@ jobs:
           echo "::set-env name=INFLUXDB_V2_URL::$INFLUXDB_V2_URL"
           echo "::set-env name=INFLUXDB_V2_USERNAME::$INFLUXDB_V2_USERNAME"
           echo "::set-env name=INFLUXDB_V2_PASSWORD::$INFLUXDB_V2_PASSWORD"
-
 
       - name: Go fmt
         run: make fmt
