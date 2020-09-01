@@ -1,24 +1,28 @@
 package influxdbv2_onboarding
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"os"
 	"testing"
 )
 
-var testProviders = map[string]terraform.ResourceProvider{
-	"influxdbv2-onboarding": Provider(),
-}
-
 func TestProvider(t *testing.T) {
-	if err := Provider().(*schema.Provider).InternalValidate(); err != nil {
+	if err := Provider().InternalValidate(); err != nil {
 		t.Fatalf("err: %s", err)
 	}
 }
 
 func TestMain(m *testing.M) {
-	acctest.UseBinaryDriver("influxdbv2-onboarding", Provider)
 	resource.TestMain(m)
+}
+
+var testAccProviders = map[string]*schema.Provider{
+	"influxdbv2-onboarding": Provider(),
+}
+
+func testAccPreCheck(t *testing.T) {
+	if v := os.Getenv("INFLUXDB_V2_URL"); v == "" {
+		t.Fatal("INFLUXDB_V2_URL must be set for acceptance tests")
+	}
 }

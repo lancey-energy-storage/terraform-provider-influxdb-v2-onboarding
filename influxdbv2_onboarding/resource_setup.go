@@ -3,7 +3,7 @@ package influxdbv2_onboarding
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/lancey-energy-storage/influxdb-client-go"
 )
 

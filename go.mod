@@ -3,10 +3,7 @@ module github.com/lancey-energy-storage/terraform-provider-influxdb-v2-onboardin
 go 1.14
 
 require (
-	github.com/hashicorp/go-getter v1.4.2-0.20200106182914-9813cbd4eb02 // indirect
-	github.com/hashicorp/hcl/v2 v2.3.0 // indirect
-	github.com/hashicorp/terraform-config-inspect v0.0.0-20191212124732-c6ae6269b9d7 // indirect
-	github.com/hashicorp/terraform-plugin-sdk v1.8.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.1
 	github.com/lancey-energy-storage/influxdb-client-go v0.1.6-0.20200410160148-dc950e99699c
-	golang.org/x/tools v0.0.0-20200415034506-5d8e1897c761 // indirect
+	github.com/mattn/go-colorable v0.1.1 // indirect
 )

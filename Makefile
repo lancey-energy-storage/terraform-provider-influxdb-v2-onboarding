@@ -7,6 +7,10 @@ default: build
 build: fmtcheck
 	go install
 
+clean:
+	@rm terraform-provider-influxdbv2-onboarding
+	@go clean -testcache
+
 test: fmtcheck
 	go test -i $(TEST) || exit 1
 	echo $(TEST) | \
@@ -21,7 +25,7 @@ vet:
 		exit 1; \
 	fi
 
-testacc: fmtcheck
+testacc: fmtcheck fmt
 	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
 
 
