@@ -1,8 +1,10 @@
 package influxdbv2_onboarding
 
 import (
+	"context"
+	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/lancey-energy-storage/influxdb-client-go"
+	"github.com/influxdata/influxdb-client-go"
 )
 
 func Provider() *schema.Provider {
@@ -22,9 +24,10 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	influx, err := influxdb.New(d.Get("url").(string), "")
+	influx := influxdb2.NewClient(d.Get("url").(string), "")
+	_, err := influx.Ready(context.Background())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error pinging server: %s", err)
 	}
 	return influx, nil
 }
