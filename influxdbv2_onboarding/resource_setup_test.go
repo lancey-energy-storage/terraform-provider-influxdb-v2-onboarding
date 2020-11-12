@@ -1,54 +1,31 @@
 package influxdbv2_onboarding
 
 import (
-	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"testing"
 )
 
 func TestResourceSetup(t *testing.T) {
 	resource.Test(t, resource.TestCase{
-		Providers: testProviders,
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccConfig,
+				Config: testAccConfigSetup(),
 				Check: resource.ComposeTestCheckFunc(
-
-					testAccCheckSetupExists("influxdbv2-onboarding_setup.setup"),
+					resource.TestCheckResourceAttrSet("influxdbv2-onboarding_setup.setup", "bucket_id"),
+					resource.TestCheckResourceAttrSet("influxdbv2-onboarding_setup.setup", "user_id"),
+					resource.TestCheckResourceAttrSet("influxdbv2-onboarding_setup.setup", "org_id"),
+					resource.TestCheckResourceAttrSet("influxdbv2-onboarding_setup.setup", "auth_id"),
+					resource.TestCheckResourceAttrSet("influxdbv2-onboarding_setup.setup", "token"),
 				),
 			},
 		},
 	})
 }
 
-func testAccCheckSetupExists(n string) resource.TestCheckFunc {
-	return func(s *terraform.State) error {
-		rs, ok := s.RootModule().Resources[n]
-		if !ok {
-			return fmt.Errorf("not found %s", n)
-		}
-		if rs.Primary.Attributes["bucket_id"] == "" {
-			return fmt.Errorf("no bucket id set")
-		}
-		if rs.Primary.Attributes["user_id"] == "" {
-			return fmt.Errorf("no user id set")
-		}
-		if rs.Primary.Attributes["org_id"] == "" {
-			return fmt.Errorf("no org id set")
-		}
-		if rs.Primary.Attributes["auth_id"] == "" {
-			return fmt.Errorf("no auth id set")
-		}
-		if rs.Primary.Attributes["token"] == "" {
-			return fmt.Errorf("no token set")
-		}
-
-		return nil
-	}
-}
-
-var testAccConfig = `
+func testAccConfigSetup() string {
+	return `
 resource "influxdbv2-onboarding_setup" "setup" {
   username = "test"
   password = "test1234"
@@ -57,3 +34,4 @@ resource "influxdbv2-onboarding_setup" "setup" {
   retention_period = 4
 }
 `
+}

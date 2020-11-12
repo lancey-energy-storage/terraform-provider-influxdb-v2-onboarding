@@ -2,9 +2,11 @@ package influxdbv2_onboarding
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/lancey-energy-storage/influxdb-client-go"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/influxdata/influxdb-client-go"
+	"net/http"
 )
 
 func ResourceSetup() *schema.Resource {
@@ -65,7 +67,7 @@ func ResourceSetup() *schema.Resource {
 }
 
 func resourceSetupCreate(d *schema.ResourceData, meta interface{}) error {
-	influx := meta.(*influxdb.Client)
+	influx := meta.(influxdb2.Client)
 	err := resourceSetupRead(d, meta)
 	if err != nil {
 		return fmt.Errorf("error getting status of influxdbv2 instance: %v", err)
@@ -77,15 +79,12 @@ func resourceSetupCreate(d *schema.ResourceData, meta interface{}) error {
 		}
 
 		d.Set("token", result.Auth.Token)
-		d.Set("user_id", result.User.ID)
-		d.Set("bucket_id", result.Bucket.ID)
-		d.Set("org_id", result.Org.ID)
-		d.Set("auth_id", result.Auth.ID)
+		d.Set("user_id", result.User.Id)
+		d.Set("bucket_id", result.Bucket.Id)
+		d.Set("org_id", result.Org.Id)
+		d.Set("auth_id", result.Auth.Id)
 		id := ""
-		url, err := influx.GetUrl()
-		if err != nil {
-			id = ""
-		}
+		url := influx.ServerUrl()
 		id = url
 		d.SetId(id)
 	}
@@ -94,12 +93,18 @@ func resourceSetupCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceSetupRead(d *schema.ResourceData, meta interface{}) error {
-	influx := meta.(*influxdb.Client)
-	result, err := influx.GetSetup()
+	influx := meta.(influxdb2.Client)
+
+	var url = influx.ServerURL() + "/api/v2/setup"
+	result, err := http.Get(url)
 	if err != nil {
-		return fmt.Errorf("unable to call influxdbv2 instance: %v", err)
+		return fmt.Errorf("error while calling %s", url)
 	}
-	d.Set("allowed", result.Allowed)
+	defer result.Body.Close()
+
+	var jsonDecode map[string]interface{}
+	json.NewDecoder(result.Body).Decode(&jsonDecode)
+	d.Set("allowed", jsonDecode["allowed"])
 	return nil
 }
 

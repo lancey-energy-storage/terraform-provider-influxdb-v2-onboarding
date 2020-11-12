@@ -1,12 +1,13 @@
 package influxdbv2_onboarding
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"github.com/lancey-energy-storage/influxdb-client-go"
+	"context"
+	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/influxdata/influxdb-client-go"
 )
 
-func Provider() terraform.ResourceProvider {
+func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
 			"influxdbv2-onboarding_setup": ResourceSetup(),
@@ -23,9 +24,10 @@ func Provider() terraform.ResourceProvider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	influx, err := influxdb.New(d.Get("url").(string), "")
+	influx := influxdb2.NewClient(d.Get("url").(string), "")
+	_, err := influx.Ready(context.Background())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error pinging server: %s", err)
 	}
 	return influx, nil
 }
