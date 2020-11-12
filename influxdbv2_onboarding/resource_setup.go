@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/influxdata/influxdb-client-go"
 	"net/http"
-	"os"
 )
 
 func ResourceSetup() *schema.Resource {
@@ -94,7 +93,9 @@ func resourceSetupCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceSetupRead(d *schema.ResourceData, meta interface{}) error {
-	var url = os.Getenv("INFLUXDB_V2_URL") + "/api/v2/setup"
+	influx := meta.(influxdb2.Client)
+
+	var url = influx.ServerURL() + "/api/v2/setup"
 	result, err := http.Get(url)
 	if err != nil {
 		return fmt.Errorf("error while calling %s", url)
